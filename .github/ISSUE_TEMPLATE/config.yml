@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions & ideas
+    url: https://github.com/teddymazuri/unartifact/discussions
+    about: Open-ended questions and proposals belong in Discussions, not Issues.
+  - name: Security disclosure
+    url: https://github.com/teddymazuri/unartifact/security/advisories/new
+    about: Report a vulnerability privately. Do not open a public issue.
