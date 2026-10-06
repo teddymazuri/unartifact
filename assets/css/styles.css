@@ -1,0 +1,37 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Base polish ---------- */
+@layer base {
+  html { -webkit-tap-highlight-color: transparent; }
+  body { font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Inter, sans-serif; }
+  code { font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+}
+
+/* ---------- Custom toggle switch ---------- */
+@layer components {
+  .toggle {
+    @apply appearance-none relative h-6 w-11 rounded-full bg-slate-300 cursor-pointer transition-colors duration-200;
+  }
+  .toggle::after {
+    content: "";
+    @apply absolute top-0.5 left-0.5 h-5 w-5 rounded-full bg-white shadow transition-transform duration-200;
+  }
+  .toggle:checked { @apply bg-indigo-600; }
+  .toggle:checked::after { transform: translateX(1.25rem); }
+  .toggle:focus-visible { @apply outline-none ring-2 ring-indigo-500 ring-offset-2; }
+
+  /* Drop zone hover lift */
+  #drop-zone { transition: border-color .2s, background-color .2s, transform .15s; }
+  #drop-zone:active { transform: scale(0.995); }
+
+  /* Progress log scroll */
+  #progress-log { max-height: 8rem; overflow-y: auto; }
+}
+
+/* ---------- Scrollbar ---------- */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #94a3b8; }

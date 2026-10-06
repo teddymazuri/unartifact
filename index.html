@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UnArtifact — Client-Side AI Document Sanitizer &amp; Artifact Remover</title>
+  <meta name="description" content="UnArtifact strips AI artifacts, metadata, and LLM boilerplate from .doc and .docx files — 100% in your browser. Zero uploads. Zero telemetry." />
+  <meta name="theme-color" content="#4f46e5" />
+  <link rel="icon" type="image/svg+xml" href="/public/favicon.svg" />
+  <link rel="stylesheet" href="/assets/css/build.css" />
+  <script defer src="/assets/js/vendor/jszip.min.js"></script>
+  <script defer src="/assets/js/vendor/file-saver.js"></script>
+  <script defer src="/assets/js/cleaner.js"></script>
+  <script defer src="/assets/js/app.js"></script>
+</head>
+<body class="min-h-screen flex flex-col bg-slate-50 text-slate-800 antialiased">
+
+  <!-- ================= NAVBAR ================= -->
+  <header class="sticky top-0 z-40 backdrop-blur bg-white/80 border-b border-slate-200">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-16">
+      <a href="#/" class="flex items-center gap-2 font-extrabold text-lg text-indigo-600">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+        <span>UnArtifact</span>
+      </a>
+      <ul class="hidden md:flex items-center gap-1 text-sm font-medium">
+        <li><a data-nav href="#/"      class="px-3 py-2 rounded-lg hover:bg-slate-100">Home</a></li>
+        <li><a data-nav href="#/app"   class="px-3 py-2 rounded-lg hover:bg-slate-100">App</a></li>
+        <li><a data-nav href="#/contact" class="px-3 py-2 rounded-lg hover:bg-slate-100">Contact</a></li>
+        <li><a data-nav href="#/privacy" class="px-3 py-2 rounded-lg hover:bg-slate-100">Privacy</a></li>
+        <li><a data-nav href="#/terms"   class="px-3 py-2 rounded-lg hover:bg-slate-100">Terms</a></li>
+      </ul>
+      <a href="#/app" class="hidden sm:inline-flex items-center rounded-lg bg-indigo-600 text-white text-sm font-semibold px-4 py-2 hover:bg-indigo-700 transition">
+        Sanitize a File
+      </a>
+    </nav>
+  </header>
+
+  <!-- ================= MAIN / VIEWS ================= -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-10">
+
+    <!-- ============ VIEW: LANDING ============ -->
+    <section id="view-landing" class="view hidden">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <span class="inline-flex items-center gap-2 rounded-full bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 mb-5">
+            <span class="h-2 w-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            Zero Data Leaves Your Browser
+          </span>
+          <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 leading-tight">
+            100% Private, <span class="text-indigo-600">Local-Only</span> Document Sanitizer
+          </h1>
+          <p class="mt-5 text-lg text-slate-600">
+            UnArtifact scrubs AI formatting artifacts, hidden metadata, revision marks, and LLM boilerplate from your <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.doc</code> and <code class="bg-slate-100 px-1.5 py-0.5 rounded text-sm">.docx</code> files — entirely on your device.
+          </p>
+          <div class="mt-8 flex flex-wrap gap-3">
+            <a href="#/app" class="inline-flex items-center rounded-xl bg-indigo-600 text-white font-semibold px-6 py-3 hover:bg-indigo-700 transition shadow-lg shadow-indigo-600/20">
+              Open the App →
+            </a>
+            <a href="#/privacy" class="inline-flex items-center rounded-xl border border-slate-300 bg-white font-semibold px-6 py-3 hover:bg-slate-50 transition">
+              How Privacy Works
+            </a>
+          </div>
+        </div>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="text-indigo-600 text-2xl mb-2">🔒</div>
+            <h3 class="font-bold text-slate-900">Offline-First</h3>
+            <p class="text-sm text-slate-600 mt-1">No servers, no network calls. Parsing runs in WebAssembly-grade JS memory.</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="text-indigo-600 text-2xl mb-2">🧹</div>
+            <h3 class="font-bold text-slate-900">Artifact Removal</h3>
+            <p class="text-sm text-slate-600 mt-1">Strips AI shading, code-font overrides, and irregular indent styles.</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="text-indigo-600 text-2xl mb-2">🕵️</div>
+            <h3 class="font-bold text-slate-900">Metadata Scrub</h3>
+            <p class="text-sm text-slate-600 mt-1">Removes author, initials, timestamps, comments, and revision history.</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+            <div class="text-indigo-600 text-2xl mb-2">📄</div>
+            <h3 class="font-bold text-slate-900">Format Preserved</h3>
+            <p class="text-sm text-slate-600 mt-1">.docx stays .docx, .doc stays .doc. Extension is never silently changed.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ VIEW: APP ============ -->
+    <section id="view-app" class="view hidden">
+      <h2 class="text-3xl font-extrabold text-slate-900">The App</h2>
+      <p class="text-slate-600 mt-2">Drop a document below. Everything runs locally — you can even disconnect from the internet first.</p>
+
+      <div class="mt-8 grid lg:grid-cols-3 gap-8">
+        <!-- Upload + progress -->
+        <div class="lg:col-span-2">
+          <div id="drop-zone" class="rounded-2xl border-2 border-dashed border-slate-300 bg-white p-10 text-center cursor-pointer hover:border-indigo-500 hover:bg-indigo-50/40 transition">
+            <input id="file-input" type="file" accept=".doc,.docx" class="hidden" />
+            <div class="text-5xl mb-3">📎</div>
+            <p class="font-semibold text-slate-800">Drag &amp; drop your <span class="text-indigo-600">.doc</span> / <span class="text-indigo-600">.docx</span> here</p>
+            <p class="text-sm text-slate-500 mt-1">or click to browse. Files never leave this tab.</p>
+          </div>
+
+          <div id="progress-wrap" class="hidden mt-6 rounded-2xl border border-slate-200 bg-white p-6">
+            <div class="flex items-center justify-between text-sm font-medium">
+              <span id="progress-label" class="text-slate-700">Processing…</span>
+              <span id="progress-pct" class="text-indigo-600">0%</span>
+            </div>
+            <div class="mt-3 h-2 w-full rounded-full bg-slate-100 overflow-hidden">
+              <div id="progress-bar" class="h-full w-0 bg-indigo-600 transition-all duration-300"></div>
+            </div>
+            <ul id="progress-log" class="mt-4 space-y-1 text-xs text-slate-500 font-mono"></ul>
+          </div>
+
+          <div id="result-wrap" class="hidden mt-6 rounded-2xl border border-emerald-200 bg-emerald-50 p-6">
+            <h3 class="font-bold text-emerald-800">✅ Cleaning complete</h3>
+            <p id="result-summary" class="text-sm text-emerald-700 mt-1"></p>
+            <button id="download-btn" class="mt-4 inline-flex items-center rounded-xl bg-emerald-600 text-white font-semibold px-6 py-3 hover:bg-emerald-700 transition">
+              ⬇ Download Sanitized File
+            </button>
+          </div>
+        </div>
+
+        <!-- Toggles -->
+        <aside class="rounded-2xl border border-slate-200 bg-white p-6 h-fit">
+          <h3 class="font-bold text-slate-900">Cleaning Routines</h3>
+          <p class="text-xs text-slate-500 mt-1">Toggle individual passes on or off.</p>
+          <div class="mt-5 space-y-4">
+            <label class="flex items-center justify-between gap-4">
+              <span class="text-sm font-medium text-slate-700">Strip Metadata</span>
+              <input type="checkbox" data-routine="metadata" class="toggle" checked />
+            </label>
+            <label class="flex items-center justify-between gap-4">
+              <span class="text-sm font-medium text-slate-700">Reset AI Shading / Fonts</span>
+              <input type="checkbox" data-routine="formatting" class="toggle" checked />
+            </label>
+            <label class="flex items-center justify-between gap-4">
+              <span class="text-sm font-medium text-slate-700">Scrub LLM Boilerplate</span>
+              <input type="checkbox" data-routine="boilerplate" class="toggle" checked />
+            </label>
+          </div>
+          <p class="mt-6 text-xs text-slate-400 leading-relaxed">
+            All toggles operate on the parsed XML tree in memory. The original file on disk is never modified.
+          </p>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ============ VIEW: CONTACT ============ -->
+    <section id="view-contact" class="view hidden max-w-2xl mx-auto">
+      <h2 class="text-3xl font-extrabold text-slate-900">Contact</h2>
+      <p class="text-slate-600 mt-2">Feedback, bug reports, or feature requests — we read everything.</p>
+      <form id="contact-form" class="mt-8 space-y-5" novalidate>
+        <div>
+          <label for="c-name" class="block text-sm font-semibold text-slate-700">Name</label>
+          <input id="c-name" name="name" type="text" required minlength="2"
+                 class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <p class="err text-xs text-rose-600 mt-1 hidden"></p>
+        </div>
+        <div>
+          <label for="c-email" class="block text-sm font-semibold text-slate-700">Email</label>
+          <input id="c-email" name="email" type="email" required
+                 class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          <p class="err text-xs text-rose-600 mt-1 hidden"></p>
+        </div>
+        <div>
+          <label for="c-msg" class="block text-sm font-semibold text-slate-700">Message</label>
+          <textarea id="c-msg" name="message" rows="5" required minlength="10"
+                    class="mt-1 w-full rounded-xl border border-slate-300 px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+          <p class="err text-xs text-rose-600 mt-1 hidden"></p>
+        </div>
+        <button type="submit" class="rounded-xl bg-indigo-600 text-white font-semibold px-6 py-3 hover:bg-indigo-700 transition">Send Message</button>
+        <p id="contact-success" class="hidden text-sm font-medium text-emerald-700">✅ Thanks! Your message has been validated locally. (No network request was made.)</p>
+      </form>
+    </section>
+
+    <!-- ============ VIEW: PRIVACY ============ -->
+    <section id="view-privacy" class="view hidden max-w-3xl mx-auto prose prose-slate">
+      <h2 class="text-3xl font-extrabold text-slate-900">Privacy Policy</h2>
+      <p class="text-sm text-slate-500 mt-1">Last updated: 2025</p>
+      <div class="mt-6 space-y-4 text-slate-700 leading-relaxed">
+        <p><strong>Short version:</strong> your documents never leave your device. UnArtifact is a client-side utility. There is no backend.</p>
+        <h3 class="text-xl font-bold text-slate-900 pt-2">What we process</h3>
+        <p>When you drop a file, JavaScript reads it into the browser's memory, unzips it, edits its XML, and re-zips it. This happens entirely inside your tab.</p>
+        <h3 class="text-xl font-bold text-slate-900 pt-2">What we collect</h3>
+        <ul class="list-disc pl-5 space-y-1">
+          <li><strong>No file uploads.</strong> Zero bytes of your document are transmitted.</li>
+          <li><strong>No telemetry.</strong> We do not use analytics, trackers, or fingerprinting.</li>
+          <li><strong>No remote storage.</strong> There are no cookies, sessions, or accounts.</li>
+        </ul>
+        <h3 class="text-xl font-bold text-slate-900 pt-2">Network requests</h3>
+        <p>All libraries (JSZip, FileSaver) are bundled locally. Once the page loads, you may disconnect from the internet and the app will continue to function.</p>
+        <h3 class="text-xl font-bold text-slate-900 pt-2">Your rights</h3>
+        <p>Because we never receive your data, there is nothing to delete, export, or rectify on our side. You retain full control at all times.</p>
+      </div>
+    </section>
+
+    <!-- ============ VIEW: TERMS ============ -->
+    <section id="view-terms" class="view hidden max-w-3xl mx-auto prose prose-slate">
+      <h2 class="text-3xl font-extrabold text-slate-900">Terms of Use</h2>
+      <p class="text-sm text-slate-500 mt-1">Last updated: 2025</p>
+      <div class="mt-6 space-y-4 text-slate-700 leading-relaxed">
+        <h3 class="text-xl font-bold text-slate-900">1. Acceptance</h3>
+        <p>By using UnArtifact you agree to these terms. If you do not agree, do not use the tool.</p>
+        <h3 class="text-xl font-bold text-slate-900">2. As-Is Utility</h3>
+        <p>UnArtifact is provided "as is", without warranty of any kind. Document cleaning is heuristic and may not remove every artifact or may alter formatting you wished to keep. Always retain a backup of your original file.</p>
+        <h3 class="text-xl font-bold text-slate-900">3. Acceptable Use</h3>
+        <p>You may use UnArtifact for any lawful purpose. You are solely responsible for the documents you process and for ensuring you have the right to modify them.</p>
+        <h3 class="text-xl font-bold text-slate-900">4. Limitation of Liability</h3>
+        <p>In no event shall the authors be liable for any loss of data, corrupted documents, or damages arising from the use of this tool.</p>
+        <h3 class="text-xl font-bold text-slate-900">5. Changes</h3>
+        <p>These terms may be updated. Continued use after changes constitutes acceptance.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="border-t border-slate-200 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-slate-500">
+      <p><strong class="text-slate-700">UnArtifact</strong> — Client-Side AI Document Sanitizer &amp; Artifact Remover</p>
+      <nav class="flex flex-wrap gap-4">
+        <a href="#/privacy" class="hover:text-indigo-600">Privacy</a>
+        <a href="#/terms" class="hover:text-indigo-600">Terms</a>
+        <a href="#/contact" class="hover:text-indigo-600">Contact</a>
+      </nav>
+      <p class="text-xs">© <span id="year"></span> UnArtifact. Runs 100% locally.</p>
+    </div>
+  </footer>
+</body>
+</html>

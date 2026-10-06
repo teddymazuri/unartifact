@@ -1,0 +1,43 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Tailwind build output (delete this line if you want to commit build.css)
+# assets/css/build.css
+
+# Editor
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs / temp
+*.log
+*.tmp
+.cache/
+tmp/
+temp/
+
+# Env
+.env
+.env.local
+.env.*.local
+
+# Cloudflare
+.wrangler/
+wrangler.toml
+
+# Test documents
+*.doc
+*.docx
+!docs/sample-*.docx
+!docs/sample-*.doc

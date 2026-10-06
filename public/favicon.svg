@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32"
+     role="img" aria-label="UnArtifact">
+  <title>UnArtifact</title>
+
+  <defs>
+    <!-- Diagonal erase band, used as an inverted mask -->
+    <mask id="ua-erase" maskUnits="userSpaceOnUse" x="0" y="0" width="32" height="32">
+      <rect width="32" height="32" fill="#fff"/>
+      <path d="M 3 21 L 21 3 L 26 8 L 8 26 Z" fill="#000"/>
+    </mask>
+
+    <!-- Page gradient -->
+    <linearGradient id="ua-page" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#FFFFFF"/>
+      <stop offset="1" stop-color="#E0E7FF"/>
+    </linearGradient>
+
+    <!-- Background tile gradient -->
+    <linearGradient id="ua-tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6366F1"/>
+      <stop offset="1" stop-color="#3730A3"/>
+    </linearGradient>
+
+    <!-- Sparkle glow -->
+    <radialGradient id="ua-glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#10B981" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#10B981" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Rounded background tile -->
+  <rect x="0" y="0" width="32" height="32" rx="7" fill="url(#ua-tile)"/>
+
+  <!-- Document body, masked to remove the erased diagonal band -->
+  <g mask="url(#ua-erase)">
+    <!-- Page silhouette -->
+    <path d="M 7 6 Q 7 5 8 5 L 21 5 L 25 9 L 25 26 Q 25 27 24 27 L 8 27 Q 7 27 7 26 Z"
+          fill="url(#ua-page)"/>
+
+    <!-- Folded top-right corner -->
+    <path d="M 21 5 L 25 9 L 21 9 Z" fill="#C7D2FE"/>
+
+    <!-- Simulated text lines (3 short rules) -->
+    <rect x="10" y="12" width="10" height="1.4" rx="0.7" fill="#4F46E5" opacity="0.85"/>
+    <rect x="10" y="16" width="12" height="1.4" rx="0.7" fill="#4F46E5" opacity="0.65"/>
+    <rect x="10" y="20" width="8"  height="1.4" rx="0.7" fill="#4F46E5" opacity="0.45"/>
+  </g>
+
+  <!-- Sanitized sparkle at lower-right, sitting on the erase edge -->
+  <circle cx="23" cy="23" r="5" fill="url(#ua-glow)"/>
+  <path d="M 23 19.5 L 24.05 21.95 L 26.5 23 L 24.05 24.05 L 23 26.5 L 21.95 24.05 L 19.5 23 L 21.95 21.95 Z"
+        fill="#10B981"/>
+  <circle cx="23" cy="23" r="0.9" fill="#FFFFFF"/>
+</svg>
